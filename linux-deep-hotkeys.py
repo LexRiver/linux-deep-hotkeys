@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 #
 # This script allows you to use Space-key as a modifier key like Shift or Ctrl and also as a usual Space-key at the same time.
-# It should work in any linux distibutive.
+# It should work in any linux distributive.
 # 
 # Install dependencies first:
 #   For Ubuntu:
@@ -16,7 +16,7 @@
 #   Space+l = Right
 #   Space+i = Up
 #   Space+k = Down
-#   Space+u = Backspace
+#   Space+u = Backspaceg
 #   Space+o = Delete
 #   Space+h = Home
 #   Space+; = End
