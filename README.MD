@@ -2,11 +2,34 @@
 
 This script allows you to use Space-key as a modifier key like Shift or Ctrl and as a usual Space-key at the same time.
 
+This script adds the following bindings:
+```
+   Space + j = Left
+   Space + l = Right
+   Space + i = Up
+   Space + k = Down
+   Space + u = Backspace
+   Space + o = Delete
+   Space + h = Home
+   Space + ; = End
+   Space + n = PageUp
+   Space + m = PageDown
+
+   Ctrl+Alt+Win+q = quit script
+   Ctrl+Alt+Win+z = pause/unpase bindings
+```   
+But you can modify it as you like.
+
+
 <br/>
 
 ## Step 1 : install evdev
 
-For Ubuntu
+Evdev is a library for working with input devices.
+
+More details here: https://en.wikipedia.org/wiki/Evdev
+
+To install it for Ubuntu:
 
 ```
 sudo apt-get install python-dev python3-pip gcc
@@ -16,7 +39,7 @@ sudo apt-get install python-dev python3-pip gcc
 sudo pip install evdev 
 ```
 
-More details and other distros:
+For more details and other distros please see:
 
 https://python-evdev.readthedocs.io/en/latest/install.html
 
@@ -72,6 +95,6 @@ MIT
 
 ## Keywords to find this script
 
-linux keyboard remapping shortcuts hotkeys binding evdev xmodmap xlib xorg
+linux keyboard remapping shortcuts hotkeys binding evdev libevdev xmodmap xlib libinput xorg
 
 
