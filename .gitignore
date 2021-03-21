@@ -130,4 +130,5 @@ dmypy.json
 
 
 # lexriver
-temp.py
+./temp.py
+.vscode
