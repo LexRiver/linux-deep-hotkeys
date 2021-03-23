@@ -69,7 +69,6 @@ logging.basicConfig(stream=sys.stdout, level=logging.INFO)
 
 
 
-
 def get_device_name_from_cli():
     # print(sys.argv)
 
@@ -194,7 +193,7 @@ async def action(device, fake_device):
         
                 elif event.code == evdev.ecodes.KEY_SPACE:
                     is_space_down = event.value
-                    if event.value == key_is_down or event.value == key_is_hold:
+                    if event.value == key_is_down:
                         list_of_keydowns_while_space_down = []
                         skip_send = True
                         hotkey_with_space_pressed = False
@@ -206,7 +205,7 @@ async def action(device, fake_device):
                             # send `space` key if no hotkey with `space` was pressed
                             # send `space` down before sending current event (`space` up)
                             logging.debug('---> send space event-down before sending event-up')
-                            fake_device.write_event(evdev.InputEvent(event.sec, event.usec, event.type, evdev.ecodes.KEY_SPACE, 1))
+                            fake_device.write_event(evdev.InputEvent(event.sec, event.usec, event.type, evdev.ecodes.KEY_SPACE, key_is_down))
         
             # print('leftctrl=', is_leftctrl_down, 'leftalt=', is_leftalt_down, 'leftshift=', is_leftshift_down, 'leftmeta=', is_leftmeta_down, 'space=', is_space_down)           
 
@@ -237,34 +236,36 @@ async def action(device, fake_device):
 
 
                 # main logic begins
-
-                if event.value == key_is_down or event.value == key_is_hold:
-                    if not is_on_pause and is_space_down and event.code in keycodes_to_bind:
-                        # that is our key, modify it
-
-                        # save keys to modify on key-up
-                        list_of_keydowns_while_space_down.append(event.code)
-
-                        # modify key code
-                        event.code = keycodes_to_bind[event.code]
-
-                        # save flag that hotkey was pressed for not to send space-key
-                        hotkey_with_space_pressed = True
-
-
-                elif event.value == key_is_up: 
-                    # we must modify key-up event even when space-key was just released and not pressed anymore
-
-                    if event.code in list_of_keydowns_while_space_down:
-                        # that is our key, modify it
-
-                        # remove that key from list
-                        list_of_keydowns_while_space_down.remove(event.code)
-
-                        # modify key code
-                        event.code = keycodes_to_bind[event.code]
-    
                 if not skip_send:
+
+                    if event.value == key_is_down or event.value == key_is_hold:
+                        if not is_on_pause and is_space_down and event.code in keycodes_to_bind:
+                            # that is our key, modify it
+
+                            # save keys to modify on key-up
+                            if event.code not in list_of_keydowns_while_space_down:
+                                list_of_keydowns_while_space_down.append(event.code)
+
+                            # modify key code
+                            event.code = keycodes_to_bind[event.code]
+
+                            # save flag that hotkey was pressed for not to send space-key
+                            hotkey_with_space_pressed = True
+
+
+                    elif event.value == key_is_up: 
+                        # we must modify key-up event even when space-key was just released and not pressed anymore
+
+                        if event.code in list_of_keydowns_while_space_down:
+                            # that is our key, modify it
+
+                            # remove that key from list
+                            list_of_keydowns_while_space_down.remove(event.code)
+
+                            # modify key code
+                            event.code = keycodes_to_bind[event.code]
+        
+                    
                     logging.debug('---> sending event: %s', evdev.categorize(event))
                     fake_device.write_event(event)
 

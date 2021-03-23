@@ -68,7 +68,7 @@ my_list.remove(3)
 
 print(my_list)
 
-x = 1
+x = 2
 y = 0
 
 if x:
